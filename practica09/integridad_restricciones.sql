@@ -1,0 +1,140 @@
+ALTER TABLE Socio
+ADD CONSTRAINT PK_Socio
+PRIMARY KEY (CURP_Socio) ;
+
+ALTER TABLE Membresia
+ADD CONSTRAINT PK_Membresia
+PRIMARY KEY (CURP_Socio, Tipo) 
+
+ALTER TABLE TipoMembresia
+ADD CONSTRAINT PK_TipoMembresia
+PRIMARY KEY (Tipo);
+
+ALTER TABLE Compra
+ADD CONSTRAINT PK_Compra
+PRIMARY KEY (CURP_Socio, Id_Producto);
+
+ALTER TABLE Producto
+ADD CONSTRAINT PK_Producto
+PRIMARY KEY (Id_Producto);
+
+ALTER TABLE TomarClase
+ADD CONSTRAINT PK_TomarClase
+PRIMARY KEY (CURP_Socio, Nombre_Clase);
+
+ALTER TABLE Dias
+ADD CONSTRAINT PK_Dias
+PRIMARY KEY (Id_Dia);
+
+ALTER TABLE DiasClase
+ADD CONSTRAINT PK_DiasClase
+PRIMARY KEY (Nombre_Clase, Id_Dia);
+
+ALTER TABLE Clase
+ADD CONSTRAINT PK_Clase
+PRIMARY KEY (Nombre, Hora_Inicio, Costo, Puntos);
+
+ALTER TABLE Entrenador
+ADD CONSTRAINT PK_Entrenador
+PRIMARY KEY (CURP_Entrenador);
+
+ALTER TABLE ImpartirClase
+ADD CONSTRAINT PK_ImpartirClase
+PRIMARY KEY (CURP_Entrenador, Nombre_Clase) ;
+
+ALTER TABLE DiasClase
+ADD CONSTRAINT FK_Nom_Clase_DiasClase FOREIGN KEY (Nombre_Clase)
+REFERENCES Dias(Nombre);
+
+ALTER TABLE DiasClase
+ADD CONSTRAINT FK_Id_Dia_DiasClase FOREIGN KEY (Id_Dia)
+REFERENCES Dias(Id_Dia);
+
+ALTER TABLE Dias
+ADD CONSTRAINT CHK_nomDia CHECK (Nombre in ('LUN','MAR','MIE','JUE','VIE','SAB','DOM'));
+
+ALTER TABLE Dias
+ADD CONSTRAINT CHK_nombId CHECK (Id_Dia >= 1 AND Id_Dia <= 7);
+
+ALTER TABLE TomarClase
+ADD CONSTRAINT FK_CURP_Socio_TomarClase FOREIGN KEY (CURP_Socio)
+REFERENCES Socio(CURP_Socio);
+
+ALTER TABLE TomarClase
+ADD CONSTRAINT FK_Nom_Clase_TomarClase FOREIGN KEY (Nombre_Clase)
+REFERENCES Clase(Nombre);
+
+ALTER TABLE Clase
+ADD CONSTRAINT CHK_claNomb CHECK (Nombre IS NOT NULL);
+
+ALTER TABLE Clase
+ADD CONSTRAINT CHK_claPun CHECK (Puntos > 0);
+
+ALTER TABLE Clase
+ADD CONSTRAINT CHK_claDur CHECK (Duracion > 0);
+
+ALTER TABLE Clase
+ADD CONSTRAINT CHK_claCos CHECK (Costo >= 0);
+
+ALTER TABLE Entrenador
+ADD CONSTRAINT CHK_entCUR CHECK (CURP_Entrenador IS NOT NULL);
+
+ALTER TABLE Entrenador
+ADD CONSTRAINT CHK_entSex CHECK (Sexo = 'M' OR Sexo = 'F');
+
+ALTER TABLE Socio
+ADD CONSTRAINT CHK_socCURP CHECK (CURP_Socio IS NOT NULL);
+
+ALTER TABLE Socio
+ADD CONSTRAINT CHK_socLenCURP CHECK (length(CURP_Socio) = 18);
+
+ALTER TABLE Socio
+ADD CONSTRAINT CHK_socNom CHECK (Nombre IS NOT NULL);
+
+ALTER TABLE Socio
+ADD CONSTRAINT CHK_socSex CHECK (Sexo = 'M' OR Sexo = 'F');
+
+ALTER TABLE Membresia
+ADD CONSTRAINT FK_CURPSoc FOREIGN KEY (CURP_Socio)
+REFERENCES Socio(CURP_Socio);
+
+ALTER TABLE Membresia
+ADD CONSTRAINT FK_Tipo FOREIGN KEY (Tipo)
+REFERENCES TipoMembresia(Tipo);
+
+ALTER TABLE Membresia
+ADD CONSTRAINT CHK_memCos CHECK (Costo > 0);
+
+ALTER TABLE Membresia
+ADD CONSTRAINT CHK_memBen CHECK (Beneficios IS NOT NULL);
+ALTER TABLE TipoMembresia
+ADD CONSTRAINT CHK_tipTip CHECK (Tipo IS NOT NULL);
+
+ALTER TABLE TipoMembresia
+ADD CONSTRAINT CHK_tipAcc CHECK (AccesoAreas = 'T' OR AccesoAreas = 'F');
+
+ALTER TABLE TipoMembresia
+ADD CONSTRAINT CHK_tipReg CHECK (Regaderas = 'T' OR Regaderas 'F');
+
+ALTER TABLE TipoMembresia
+ADD CONSTRAINT CHK_tipCas CHECK (Casillero = 'T' OR Casillero = 'F');
+
+ALTER TABLE TipoMembresia
+ADD CONSTRAINT CHK_tipEnt CHECK (Entrenador_Pers = 'T' OR Entrenador_Pers = 'F');
+
+ALTER TABLE TipoMembresia
+ADD CONSTRAINT CHK_tipEsp CHECK (Esp_Nutricion = 'T' OR Esp_Nutricion = 'F');
+
+ALTER TABLE Producto
+ADD CONSTRAINT CHK_proId CHECK (Id_Producto IS NOT NULL);
+
+ALTER TABLE Producto
+ADD CONSTRAINT CHK_proPre CHECK (Precio IS NOT NULL);
+
+ALTER TABLE Compra
+ADD CONSTRAINT FK_CURP_Socio FOREIGN KEY (CURP_Socio)
+REFERENCES Socio(CURP_Socio);
+
+ALTER TABLE Compra
+ADD CONSTRAINT FK_Id_Producto FOREIGN KEY (Id_Producto)
+REFERENCES Producto(Id_Producto);

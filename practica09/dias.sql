@@ -1,0 +1,7 @@
+INSERT into Dias VALUES(1,'LUN');
+INSERT into Dias VALUES(2,'MAR');
+INSERT into Dias VALUES(3,'MIE');
+INSERT into Dias VALUES(4,'JUE');
+INSERT into Dias VALUES(5,'VIE');
+INSERT into Dias VALUES(6,'SAB');
+INSERT into Dias VALUES(7,'DOM');
